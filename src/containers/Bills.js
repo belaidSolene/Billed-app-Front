@@ -53,7 +53,14 @@ export default class {
             }
           })
           console.log('length', bills.length)
-        return bills
+
+          console.log(bills);
+
+          const sortedBills = bills.sort((a, b) => {
+            return new Date(b.date) - new Date(a.date)
+          })
+
+        return sortedBills
       })
     }
   }
