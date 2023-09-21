@@ -18,7 +18,7 @@ jest.mock("../app/store", () => mockStore)
 
 
 describe("Given I am connected as an Employee", () => {
-  describe("When I am on Bills page", () => {
+  describe("When I am on Bills Page", () => {
     test("Then bill icon in vertical layout should be highlighted", async () => {
 
       Object.defineProperty(window, 'localStorage', { value: localStorageMock })
@@ -77,7 +77,7 @@ describe("Given I am connected as an Employee", () => {
     })
 
     describe('When I click on new bill button', () => {
-      test('I should be sent on NewBill page', () => {
+      test('I should be sent on NewBill Page', () => {
         Object.defineProperty(window, 'localStorage', { value: localStorageMock })
         window.localStorage.setItem('user', JSON.stringify({
           type: 'Employee'
@@ -101,15 +101,15 @@ describe("Given I am connected as an Employee", () => {
       })
     })
 
-    describe('When I am on Bills page but it is loading', () => {
-      test('Then, Loading page should be rendered', () => {
+    describe('When I am on Bills Page but it is loading', () => {
+      test('Then, Loading Page should be rendered', () => {
         document.body.innerHTML = BillsUI({ loading: true })
         expect(screen.getAllByText('Loading...')).toBeTruthy()
       })
     })
 
-    describe('When I am on Bills page but back-end send an error message', () => {
-      test('Then, Error page should be rendered', () => {
+    describe('When I am on Bills Page but back-end send an error message', () => {
+      test('Then, Error Page should be rendered', () => {
         document.body.innerHTML = BillsUI({ error: 'some error message' })
         expect(screen.getAllByText('Erreur')).toBeTruthy()
       })

@@ -15,13 +15,15 @@ export default class NewBill {
     this.billId = null
     new Logout({ document, localStorage, onNavigate })
   }
+
   handleChangeFile = e => {
     e.preventDefault()
     const allowedFileTypes = ['image/jpeg', 'image/png'];
     const inputFile = this.document.querySelector(`input[data-testid="file"]`)
     const file = inputFile.files[0]
 
-    !allowedFileTypes.includes(file.type) ? inputFile.setCustomValidity('Veuillez sélectionner un fichier JPEG ou PNG valide.') : inputFile.setCustomValidity('')
+    !allowedFileTypes.includes(file.type) && inputFile.setCustomValidity('Veuillez sélectionner un fichier JPEG ou PNG valide.')
+    allowedFileTypes.includes(file.type) && inputFile.setCustomValidity('')
 
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length - 1]
@@ -47,6 +49,7 @@ export default class NewBill {
         this.fileName = fileName
       }).catch(error => console.error(error))
   }
+
   handleSubmit = e => {
     e.preventDefault()
     console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
