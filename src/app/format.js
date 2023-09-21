@@ -25,15 +25,11 @@ export const convertDateWithAbbreviatedMonth = (dateString) => {
   ];
 
   const [day, monthAbbr, year] = dateString.split(' ');
-  console.log(monthAbbr);
-
-  // Trouver l'index du mois abrégé dans le tableau des abréviations
   const monthIndex = monthAbbreviations.indexOf(monthAbbr.replace('.', ''));
 
   if (monthIndex === -1) {
     throw new Error('Mois abrégé non reconnu');
   }
 
-  // Créer une nouvelle date avec le mois en entier
   return new Date(`${monthIndex + 1}/${day}/${year}`);
 }
