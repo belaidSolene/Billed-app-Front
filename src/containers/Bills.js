@@ -29,9 +29,6 @@ export default class {
 
   getBills = async () => {
     if (this.store) {
-      
-
-
       return this.store
         .bills()
         .list()
@@ -57,10 +54,7 @@ export default class {
             })
           console.log('length', bills.length)
 
-          // console.log(bills);
-
           const sortBills = (bills) => (bills.sort((a, b) => (convertDateWithAbbreviatedMonth(b.date) - convertDateWithAbbreviatedMonth(a.date))))
-
           return sortBills(bills)
         })
     }
