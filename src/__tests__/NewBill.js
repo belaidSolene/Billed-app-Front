@@ -15,12 +15,6 @@ import BillsUI from "../views/BillsUI.js"
 
 jest.mock("../app/store", () => mockStore)
 
-/* 
-  const html = NewBillUI()
-  document.body.innerHTML = html
-*/
-
-
 describe("Given I am connected as an employee", () => {
   describe("When I am on NewBill Page", () => {
     beforeAll(async () => {
@@ -37,11 +31,11 @@ describe("Given I am connected as an employee", () => {
     })
 
     afterAll(() => {
-      window.localStorage.clear(); // Supprimez les données de localStorage
+      window.localStorage.clear();
       document.body.innerHTML = ''
     })
 
-    test("Then the new bill form should be display", () => {
+    test("Then the new bill form should be visible", () => {
       expect(screen.getAllByText('Envoyer une note de frais')).toBeTruthy()
       expect(screen.getByTestId('form-new-bill')).toBeTruthy()
     })
@@ -50,7 +44,7 @@ describe("Given I am connected as an employee", () => {
       expect(screen.getByTestId('icon-mail')).toHaveClass('active-icon')
     })
 
-    test("Then expense type input should be display", () => {
+    test("Then expense type input should be visible, required, have seven options and selectable by user", () => {
       const select = screen.getByTestId('expense-type');
       const options = screen.getAllByRole('option');
 
@@ -61,7 +55,7 @@ describe("Given I am connected as an employee", () => {
       expect(select).toHaveValue('Restaurants et bars');
     })
 
-    test("Then expense name input should be display", () => {
+    test("Then expense name input should be visible, required, and accept user input", () => {
       const input = screen.getByTestId('expense-name')
 
       expect(input).toBeInTheDocument();
@@ -71,14 +65,14 @@ describe("Given I am connected as an employee", () => {
       expect(input).toHaveValue('Vol Paris Londres');
     })
 
-    test("Then date picker input should be display", () => {
+    test("Then date picker input should be visible and required", () => {
       const input = screen.getByTestId('datepicker');
 
       expect(input).toBeInTheDocument();
       expect(input).toHaveAttribute('required');
     })
 
-    test("Then amount input should be display", () => {
+    test("Then amount input should be visible, required, and accept user input", () => {
       const input = screen.getByTestId('amount')
 
       expect(input).toBeInTheDocument();
@@ -88,7 +82,7 @@ describe("Given I am connected as an employee", () => {
       expect(input).toHaveValue(348);
     })
 
-    test("Then vat input should be display", () => {
+    test("Then vat input should be visible, required, and accept user input", () => {
       const input = screen.getByTestId('vat')
 
       expect(input).toBeInTheDocument();
@@ -97,7 +91,7 @@ describe("Given I am connected as an employee", () => {
       expect(input).toHaveValue(348);
     })
 
-    test("Then pct input should be display", () => {
+    test("Then pct input should be visible, required, and accept user input", () => {
       const input = screen.getByTestId('pct')
 
       expect(input).toBeInTheDocument();
@@ -107,7 +101,7 @@ describe("Given I am connected as an employee", () => {
       expect(input).toHaveValue(348);
     })
 
-    test("Then commentary input should be display", () => {
+    test("Then commentary input should be visible, required, and accept user input", () => {
       const input = screen.getByTestId('commentary')
 
       expect(input).toBeInTheDocument();
@@ -116,7 +110,7 @@ describe("Given I am connected as an employee", () => {
       expect(input).toHaveValue('Un commentaire');
     })
 
-    test("Then file input should be display", () => {
+    test("Then file input should be visible, required, and accept image files", () => {
       const input = screen.getByTestId('file')
       const file = new File(['(contenu du fichier)'], 'example.jpeg', { type: 'image/jpeg' });
 
@@ -127,47 +121,29 @@ describe("Given I am connected as an employee", () => {
       expect(input.files[0]).toStrictEqual(file);
     })
   })
+})
 
-  describe("When I am on NewBill Page and filling file input", () => {
-    beforeEach(async () => {
-      Object.defineProperty(window, 'localStorage', { value: localStorageMock })
-      window.localStorage.setItem('user', JSON.stringify({
-        type: 'Employee'
-      }))
-      const root = document.createElement("div")
-      root.setAttribute("id", "root")
-      document.body.append(root)
-      router()
-      window.onNavigate(ROUTES_PATH.NewBill)
-      await waitFor(() => screen.getAllByText("Envoyer une note de frais"))
-    })
+describe("Given I am an user connected as Employee and I am on NewBill Page uploading a file", () => {
+  beforeEach(async () => {
+    Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+    window.localStorage.setItem('user', JSON.stringify({
+      type: 'Employee'
+    }))
+    const root = document.createElement("div")
+    root.setAttribute("id", "root")
+    document.body.append(root)
+    router()
+    window.onNavigate(ROUTES_PATH.NewBill)
+    await waitFor(() => screen.getAllByText("Envoyer une note de frais"))
+  })
 
-    afterEach(() => {
-      window.localStorage.clear(); // Supprimez les données de localStorage
-      document.body.innerHTML = ''
-    })
+  afterEach(() => {
+    window.localStorage.clear();
+    document.body.innerHTML = ''
+  })
 
-    test("Then the file format isn't rexpected and I should have an error message and the submit button disabled", () => {
-      const newBill = new NewBill({ document, onNavigate, store: mockStore, localStorage: window.localStorage })
-
-      const fileInput = screen.getByTestId('file')
-      const file = new File(['(contenu du fichier)'], 'example.pdf', { type: 'application/pdf' })
-
-      const handleChangeFile = jest.fn((e) => newBill.handleChangeFile(e))
-      fileInput.addEventListener('change', handleChangeFile)
-
-      fireEvent.change(fileInput, {
-        target: {
-          files: [file]
-        }
-      })
-
-      expect(handleChangeFile).toHaveBeenCalled()
-      expect(screen.getByText('Veuillez sélectionner un fichier JPEG ou PNG valide.')).toHaveClass('show')
-      expect(screen.getByRole('button')).toHaveAttribute('disabled')
-    })
-
-    test("Then the file format is jpeg/png I should be able to submit the form", async () => {
+  describe("When I have selected a png file", () => {
+    test("Then I should be able to submit my form", () => {
       const newBill = new NewBill({ document, onNavigate, store: mockStore, localStorage: window.localStorage })
 
       const fileInput = screen.getByTestId('file')
@@ -183,14 +159,36 @@ describe("Given I am connected as an employee", () => {
       })
 
       expect(handleChangeFile).toHaveBeenCalled()
-      expect(screen.getByText('Veuillez sélectionner un fichier JPEG ou PNG valide.')).not.toHaveClass('show')
+      expect(screen.getByText('Veuillez sélectionner un fichier au format JPEG, JPG ou PNG valide.')).not.toHaveClass('show')
       expect(screen.getByRole('button')).not.toHaveAttribute('disabled')
+    })
+  }) 
+
+  describe("When I have selected a pdf file", () => {
+    test("Then I should have an error message and the submit button disabled", () => {
+      const newBill = new NewBill({ document, onNavigate, store: mockStore, localStorage: window.localStorage })
+
+      const fileInput = screen.getByTestId('file')
+      const file = new File(['(contenu du fichier)'], 'example.pdf', { type: 'application/pdf' })
+
+      const handleChangeFile = jest.fn((e) => newBill.handleChangeFile(e))
+      fileInput.addEventListener('change', handleChangeFile)
+
+      fireEvent.change(fileInput, {
+        target: {
+          files: [file]
+        }
+      })
+
+      expect(handleChangeFile).toHaveBeenCalled()
+      expect(screen.getByText('Veuillez sélectionner un fichier au format JPEG, JPG ou PNG valide.')).toHaveClass('show')
+      expect(screen.getByRole('button')).toHaveAttribute('disabled')
     })
   })
 })
 
 // test d'intégration POST
-describe("Given I am a user connected as Employee", () => {
+describe("Given I am an user connected as Employee and I am on NewBill Page", () => {
   describe("When I create a new bill", () => {
     test("Add bill to mock API POST", async () => {
       Object.defineProperty(window, 'localStorage', { value: localStorageMock })
