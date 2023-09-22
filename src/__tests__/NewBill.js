@@ -147,7 +147,7 @@ describe("Given I am connected as an employee", () => {
       document.body.innerHTML = ''
     })
 
-    test("Then the file format isn't jpeg/png I should have a error message", () => {
+    test("Then the file format isn't rexpected and I should have an error message and the submit button disabled", () => {
       const newBill = new NewBill({ document, onNavigate, store: mockStore, localStorage: window.localStorage })
 
       const fileInput = screen.getByTestId('file')
@@ -163,10 +163,11 @@ describe("Given I am connected as an employee", () => {
       })
 
       expect(handleChangeFile).toHaveBeenCalled()
-      expect(fileInput.validationMessage).toBe('Veuillez sélectionner un fichier JPEG ou PNG valide.')
+      expect(screen.getByText('Veuillez sélectionner un fichier JPEG ou PNG valide.')).toHaveClass('show')
+      expect(screen.getByRole('button')).toHaveAttribute('disabled')
     })
 
-    test("Then the file format is jpeg/png I shouldn't have a error message", async () => {
+    test("Then the file format is jpeg/png I should be able to submit the form", async () => {
       const newBill = new NewBill({ document, onNavigate, store: mockStore, localStorage: window.localStorage })
 
       const fileInput = screen.getByTestId('file')
@@ -182,11 +183,8 @@ describe("Given I am connected as an employee", () => {
       })
 
       expect(handleChangeFile).toHaveBeenCalled()
-      //  expect(fileInput.validationMessage).toBe('')
-
-      expect(handleChangeFile).toBeTruthy()
-      expect(fileInput.files[0]).toBe(file)
-      expect(fileInput.files).toHaveLength(1)
+      expect(screen.getByText('Veuillez sélectionner un fichier JPEG ou PNG valide.')).not.toHaveClass('show')
+      expect(screen.getByRole('button')).not.toHaveAttribute('disabled')
     })
   })
 })

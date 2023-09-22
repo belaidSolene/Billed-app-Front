@@ -21,9 +21,17 @@ export default class NewBill {
     const allowedFileTypes = ['image/jpeg', 'image/png'];
     const inputFile = this.document.querySelector(`input[data-testid="file"]`)
     const file = inputFile.files[0]
+    const errorSpan = document.getElementById('errorFormatFile')
+    const submitBtn = document.getElementById('btn-send-bill')
 
-    !allowedFileTypes.includes(file.type) && inputFile.setCustomValidity('Veuillez sélectionner un fichier JPEG ou PNG valide.')
-    allowedFileTypes.includes(file.type) && inputFile.setCustomValidity('')
+    if (!allowedFileTypes.includes(file.type)) {
+     errorSpan.classList.add('show')
+     submitBtn.disabled = true
+     return
+    } else {
+     errorSpan.classList.remove('show')
+     submitBtn.disabled = false
+    }
 
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length - 1]
@@ -48,6 +56,7 @@ export default class NewBill {
         this.fileUrl = fileUrl
         this.fileName = fileName
       }).catch(error => console.error(error))
+
   }
 
   handleSubmit = e => {

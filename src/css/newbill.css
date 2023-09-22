@@ -48,6 +48,12 @@ label {
   margin-top: 50px;
 }
 
+#btn-send-bill:disabled {
+  background-color: rgba(123, 177, 247, 0.4);
+  border: rgba(123, 177, 247, 0.5);
+  color: #36454F;
+}
+
 textarea, input, select {
   color: #0E5AE5 !important;
   opacity: 0.7 !important;
@@ -60,4 +66,14 @@ textarea:focus, input:focus, select:focus {
 
 *[placeholder] {
   color: #0E5AE5 !important;
+}
+
+#errorFormatFile {
+  color: #CD5C5C;
+  font-weight: 700;
+  display: none;
+}
+
+.show{
+  display: block !important;
 }
