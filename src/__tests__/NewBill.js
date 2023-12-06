@@ -233,6 +233,7 @@ describe("Given I am an user connected as Employee and I am on NewBill Page", ()
             type: "Employee",
           })
         )
+        
         const root = document.createElement("div")
         root.setAttribute("id", "root")
         document.body.appendChild(root)
@@ -245,10 +246,13 @@ describe("Given I am an user connected as Employee and I am on NewBill Page", ()
             },
           }
         })
+
         window.onNavigate(ROUTES_PATH.Bills)
         document.body.innerHTML = BillsUI({ error: "Erreur 500" })
+
         await new Promise(process.nextTick)
         const message = await screen.getByText(/Erreur 500/)
+
         expect(message).toBeTruthy()
       })
     })
