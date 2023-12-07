@@ -1,21 +1,11 @@
-const mockedError500 = {
-  list: () => {
-    return Promise.reject(new Error("Erreur 500"))
-  }
+export const errorPromise = (errorType) => {
+  return Promise.reject(new Error(errorType))
 }
 
-const mockedError400 = {
-  list: () => {
-    return Promise.reject(new Error("Erreur 400"))
-  }
+export const error404 = () => {
+  return Promise.reject(new Error("Erreur 404"))
 }
 
-export default {
- /*  error500() {
-    return  mockedError500
-  }, */
-  error400(){
-    return mockedError400
-  }
+export const error500 = () => {
+  return Promise.reject(new Error("Erreur 500"))
 }
-
