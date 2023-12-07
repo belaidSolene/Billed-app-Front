@@ -9,6 +9,7 @@ import NewBill from "../containers/NewBill.js"
 import { ROUTES_PATH } from "../constants/routes.js";
 import { localStorageMock } from "../__mocks__/localStorage.js"
 import mockStore from "../__mocks__/store"
+import { error404, error500 } from '../__mocks__/ErrorPromises.js';
 import router from "../app/Router"
 import { bills } from "../fixtures/bills"
 import BillsUI from "../views/BillsUI.js"
@@ -241,9 +242,7 @@ describe("Given I am an user connected as Employee and I am on NewBill Page", ()
 
         mockStore.bills.mockImplementationOnce(() => {
           return {
-            update: () => {
-              return Promise.reject(new Error("Erreur 500"))
-            },
+            update: error500
           }
         })
 

@@ -11,7 +11,7 @@ import Bills from "../containers/Bills.js"
 import { ROUTES, ROUTES_PATH } from "../constants/routes.js";
 import { localStorageMock } from "../__mocks__/localStorage.js"
 import mockStore from "../__mocks__/store"
-import {error404, error500, errorType} from "../__mocks__/storeError.js";
+import {error404, error500} from "../__mocks__/ErrorPromises.js";
 import { bills as mockedBills } from "../fixtures/bills"
 import router from "../app/Router"
 
