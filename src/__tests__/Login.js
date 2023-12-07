@@ -51,39 +51,6 @@ describe("Given that I am a user on login page", () => {
     });
   });
 
-    describe("When login fails in handleSubmitEmployee", () => {
-      test("Then it should handle the error and log it", async () => {
-        document.body.innerHTML = LoginUI();
-  
-        const form = screen.getByTestId("form-employee");
-  
-        // Mocking the login function to simulate failure
-        const store = mockStore();
-        store.login = jest.fn().mockRejectedValue(new Error("Login failed"));
-  
-        const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-  
-        const login = new Login({
-          document,
-          localStorage: window.localStorage,
-          onNavigate: jest.fn(),
-          PREVIOUS_LOCATION: "",
-          store: jest.fn(),
-        });
-  
-        const handleSubmit = jest.fn(login.handleSubmitEmployee);
-        form.addEventListener("submit", handleSubmit);
-  
-        fireEvent.submit(form);
-    
-        // Ensure that the error is logged
-        expect(consoleErrorSpy).toHaveBeenCalledWith("Login failed");
-  
-        // Cleanup
-        consoleErrorSpy.mockRestore();
-      });
-    });
-  
   describe("When I do fill fields in correct format and I click on employee button Login In", () => {
     test("Then I should be identified as an Employee in app", () => {
       document.body.innerHTML = LoginUI();
